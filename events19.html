@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GUN Game</title>
+    <style>
+        #gun,
+        #bullet,
+        #aim,
+        #scoreTable {
+            position: absolute;
+        }
+
+        #bullet,
+        #aim {
+            border-radius: 50%;
+        }
+
+        #gun {
+            background-color: blue;
+            height: 20px;
+            width: 50px;
+            left: 30px;
+            top: 50px;
+        }
+
+        #bullet {
+            background-color: yellow;
+            height: 20px;
+            width: 20px;
+            left: 50px;
+            top: 50px;
+            z-index: -1;
+        }
+
+        #aim {
+            background-color: tomato;
+            height: 30px;
+            width: 30px;
+            left: 230px;
+            top: 45px;
+        }
+    </style>
+</head>
+
+<body onkeydown="checkKey(event)">
+    <h2>Press space</h2>
+    <div id="gun"></div>
+    <div id="bullet"></div>
+    <div id="aim"></div>
+    <h2 id="scoreTable">Score: 0</h2>
+
+    <script>
+        var bulletX = 50;
+        var onFly = false;
+        var gameScore = 0;
+
+        function checkKey(e) {  //начало движения
+            // console.log(e.code);  // в консоль будет выводится код нажатой клавиши
+            if (e.code == "Space" && !onFly) {
+                onFly = true;
+                moveBullet();
+            }
+            if (e.code == "Escape" && onFly) {  // при нажатии esc движение пули останавливается
+                onFly = false;
+                // bulletX=50;
+                // bullet.style.left = bulletX + "px";
+            }
+        }
+
+        function moveBullet() {  // само движение
+            if (onFly) {
+                bulletX += 5;
+                if (bulletX >= 230) {  // если пуля достигла мишени
+                    bulletX = 50;      // пуля возвращается в пушку
+                    onFly = false;     // отключаем переменную onFly
+                    gameScore++;
+                    scoreTable.innerText = "Score: " + gameScore; //вывод кол-ва попаданий на экран
+                }
+                else
+                    setTimeout(moveBullet, 50); //если пуля не долетела до цели, мы заново запускаем функцию, и так пока пуля не достигнет мишени
+                bullet.style.left = bulletX + "px"; // положение пули на экране
+            }
+        }
+
+
+
+
+    </script>
+</body>
+
+</html>
